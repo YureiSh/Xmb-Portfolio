@@ -1,0 +1,64 @@
+:root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #000;
+  color: #fff;
+  font-family: sans-serif;
+}
+
+.xmb {
+  padding: 120px;
+}
+
+/* Yatay track: kategoriler kendi çizgisinde sabit kalıyor.
+   z-index yüksek: item'lar üstüne taştığında kategori önde görünsün. */
+.xmb__categories-viewport {
+  position: relative;
+  height: 32px;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.xmb__categories-track {
+  position: relative;
+  height: 100%;
+}
+
+.xmb__category {
+  position: absolute;
+  top: 0;
+  white-space: nowrap;
+  font-size: 18px;
+  opacity: 0.4;
+}
+
+.xmb__category--active {
+  opacity: 1;
+  border-bottom: 2px solid #fff;
+}
+
+/* Dikey track: kategoriye bitişik (gap yok), overflow:visible.
+   Bu sayede item'lar viewport'un dışına, kategori alanının ÜSTÜNE
+   fiziksel olarak taşabiliyor — kesilip kaybolmuyorlar. */
+.xmb__items-viewport {
+  position: relative;
+  overflow: visible;
+  z-index: 1;
+}
+
+.xmb__items-track {
+  position: relative;
+}
+
+.xmb__item {
+  position: absolute;
+  left: 0;
+  font-size: 16px;
+  opacity: 0.5;
+}
+
+.xmb__item--active {
+  opacity: 1;
+  font-weight: bold;
+}
