@@ -42,6 +42,7 @@ export const xmbData = {
       icon: 'settings.svg',
       items: [
         { id: 'systemSettings', label: 'System Settings', icon: 'settings.svg', type: 'panel', target: 'systemSettings' },
+        { id: 'themeSetting', label: 'Theme Settings', icon: 'settings.svg', type: 'panel', target: 'themeSetting' },
         //{ id: 'portfolio', label: 'Portfolio', icon: 'portfolio', type: 'panel', target: 'portfolio' },
         //{ id: 'ecommerce', label: 'E-commerce Platform', icon: 'ecommerce', type: 'panel', target: 'ecommerce' },
         //{ id: 'spa', label: 'SPA: Teknolojik yemekler', icon: 'spa', type: 'panel', target: 'spa' },
@@ -68,4 +69,23 @@ export const xmbData = {
     },
 
   ],
+};
+
+/**
+ * Panel kayıtları. Her panelin nasıl görüneceği burada.
+ * Item'lardan bağımsız: ileride bir paneli XMB dışından da
+ * açmak isteyebilirsin (URL, başka bir panelin içinden vs).
+ *
+ * @typedef {'fullscreen' | 'sidebar'} PanelMode
+ */
+export const PANELS = {
+  about:          { label: 'Hakkımda',            mode: 'fullscreen' },
+  cv:             { label: 'CV',                  mode: 'fullscreen' },
+  projects:       { label: 'Projeler',            mode: 'fullscreen' },
+  portfolio:      { label: 'Portfolio',           mode: 'fullscreen' },
+  ecommerce:      { label: 'E-commerce Platform', mode: 'fullscreen' },
+  spa:            { label: 'SPA: Teknolojik yemekler', mode: 'fullscreen' },
+  systemSettings: { label: 'System Settings',     mode: 'sidebar' },
+  themeSetting:   { label: 'Theme Settings',      mode: 'sidebar' },
+  doom:           { label: 'Doom',                mode: 'fullscreen' },
 };

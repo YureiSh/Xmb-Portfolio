@@ -1,72 +1,114 @@
 import { useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
 import {
-    moveCategoryLeft,
-    moveCategoryRight,
-    moveItemDown,
-    moveItemUp
+  moveCategoryLeft,
+  moveCategoryRight,
+  moveItemUp,
+  moveItemDown,
+  openPanelById,
+  closePanel,
 } from '../store/slices/xmbSlice';
+import { xmbData } from '../constant';
 
 const REPEAT_DELAY = 400;
 const REPEAT_RATE = 120;
 
 export function useXmbInput() {
-    const dispatch = useDispatch();
-    const timersRef = useRef({});
+  const dispatch = useDispatch();
+  // useStore: state'i olay ANINDA okumak için. useSelector kullansaydık
+  // her navigasyonda dependency değişir, listener'lar sürekli sökülüp
+  // yeniden takılırdı.
+  const store = useStore();
 
-    useEffect(() => {
-        const actionMap = {
-            ArrowLeft: () => dispatch(moveCategoryLeft()),
-            ArrowRight: () => dispatch(moveCategoryRight()),
-            ArrowUp: () => dispatch(moveItemUp()),
-            ArrowDown: () => dispatch(moveItemDown()),
-        };
+  const timersRef = useRef({});
 
-        const handleKeyDown = (e) => {
-            const key = e.key;
+  useEffect(() => {
+    // Tekrarlanabilir tuşlar (basılı tutunca DAS/ARR ile tekrarlar)
+    const repeatableMap = {
+      ArrowLeft: () => dispatch(moveCategoryLeft()),
+      ArrowRight: () => dispatch(moveCategoryRight()),
+      ArrowUp: () => dispatch(moveItemUp()),
+      ArrowDown: () => dispatch(moveItemDown()),
+    };
 
-            if (!actionMap[key]) return;
-            e.preventDefault();
-            if (e.repeat) return;
-            clearKeyTimers(key);
+    // Aktif item'ı seçer. Panel açıksa hiçbir şey yapmaz — panelin
+    // kendi içindeki navigasyon panelin sorumluluğunda.
+    function activateCurrentItem() {
+      const state = store.getState().xmb;
+      if (state.openPanel) return;
 
-            actionMap[key]();
+      const categoryIndex = state.activeCategoryIndex;
+      const itemIndex = state.itemIndexByCategory[categoryIndex];
+      const item = xmbData.categories[categoryIndex]?.items[itemIndex];
+      if (!item) return;
 
-            const delayTimeout = setTimeout(() => {
-                const intervalId = setInterval(() => {
-                    actionMap[key]();
-                }, REPEAT_RATE);
-                timersRef.current[key] = { delayTimeout, intervalId };
-            }, REPEAT_DELAY);
+      if (item.type === 'panel' || item.type === 'game') {
+        dispatch(openPanelById(item.target ?? item.id));
+      } else if (item.type === 'external' && item.target) {
+        // Redux'a hiç girmiyor: sayfadan çıkmak state değişikliği değil.
+        window.open(item.target, '_blank', 'noopener,noreferrer');
+      }
+    }
 
-            timersRef.current[key] = { delayTimeout, intervalId: null };
-        };
+    function goBack() {
+      const state = store.getState().xmb;
+      if (state.openPanel) dispatch(closePanel());
+    }
 
-        const handleKeyUp = (e) => {
-            clearKeyTimers(e.key);
-        };
+    // Tek atışlık tuşlar (basılı tutmak tekrar etmemeli)
+    const oneShotMap = {
+      Enter: activateCurrentItem,
+      ' ': activateCurrentItem,      // Space
+      Escape: goBack,
+      Backspace: goBack,
+    };
 
-        function clearKeyTimers(key) {
-            const timers = timersRef.current[key];
-            if (!timers) return;
-            clearTimeout(timers.delayTimeout);
-            clearInterval(timers.intervalId);
-            delete timersRef.current[key];
-        }
+    function clearKeyTimers(key) {
+      const timers = timersRef.current[key];
+      if (!timers) return;
+      clearTimeout(timers.delayTimeout);
+      clearInterval(timers.intervalId);
+      delete timersRef.current[key];
+    }
 
-        window.addEventListener('keydown', handleKeyDown);
-        window.addEventListener('keyup', handleKeyUp);
+    const handleKeyDown = (e) => {
+      const key = e.key;
 
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-            window.removeEventListener('keyup', handleKeyUp);
+      if (oneShotMap[key]) {
+        e.preventDefault();
+        if (e.repeat) return;
+        oneShotMap[key]();
+        return;
+      }
 
-            Object.keys(timersRef.current).forEach(clearKeyTimers);
-        };
-    }, [dispatch]);
+      if (!repeatableMap[key]) return;
+      e.preventDefault();
+      if (e.repeat) return;
+
+      clearKeyTimers(key);
+      repeatableMap[key]();
+
+      const delayTimeout = setTimeout(() => {
+        const intervalId = setInterval(() => {
+          repeatableMap[key]();
+        }, REPEAT_RATE);
+        timersRef.current[key] = { delayTimeout, intervalId };
+      }, REPEAT_DELAY);
+
+      timersRef.current[key] = { delayTimeout, intervalId: null };
+    };
+
+    const handleKeyUp = (e) => {
+      clearKeyTimers(e.key);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+      Object.keys(timersRef.current).forEach(clearKeyTimers);
+    };
+  }, [dispatch, store]);
 }
-
-/*
-const myRef = useRef(initialValue);
-// myRef = { current: initialValue }
-*/
