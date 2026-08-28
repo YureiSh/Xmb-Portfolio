@@ -8,15 +8,14 @@
 }
 
 .xmb {
-  padding: 120px;
+  padding: 240px;
+  padding-left: 300px;
 }
 
-/* Yatay track: kategoriler kendi çizgisinde sabit kalıyor.
-   z-index yüksek: item'lar üstüne taştığında kategori önde görünsün. */
 .xmb__categories-viewport {
   position: relative;
   height: 32px;
-  overflow: hidden;
+  overflow: visible;
   z-index: 2;
 }
 
@@ -30,17 +29,13 @@
   top: 0;
   white-space: nowrap;
   font-size: 18px;
-  opacity: 0.4;
+  opacity: 0.3;
 }
 
 .xmb__category--active {
   opacity: 1;
-  border-bottom: 2px solid #fff;
 }
 
-/* Dikey track: kategoriye bitişik (gap yok), overflow:visible.
-   Bu sayede item'lar viewport'un dışına, kategori alanının ÜSTÜNE
-   fiziksel olarak taşabiliyor — kesilip kaybolmuyorlar. */
 .xmb__items-viewport {
   position: relative;
   overflow: visible;
@@ -56,9 +51,22 @@
   left: 0;
   font-size: 16px;
   opacity: 0.5;
+  scale: 0.9;
 }
 
 .xmb__item--active {
   opacity: 1;
+  left: 0;
   font-weight: bold;
+  scale: 1.05;
+}
+
+.canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: block;
 }

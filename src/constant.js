@@ -30,39 +30,40 @@ export const xmbData = {
     {
       id: 'profile',
       label: 'Profil',
-      icon: 'user',
+      icon: 'user.svg',
       items: [
-        { id: 'about', label: 'Hakkımda', icon: 'about', type: 'panel', target: 'about' },
-        { id: 'cv', label: 'CV', icon: 'cv', type: 'panel', target: 'cv' },
+        { id: 'about', label: 'Hakkımda', icon: 'userPlus.svg', type: 'panel', target: 'about' },
+        { id: 'cv', label: 'CV', icon: 'user1.svg', type: 'panel', target: 'cv' },
+      ],
+    },
+    {
+      id: 'settings',
+      label: 'Settings',
+      icon: 'settings.svg',
+      items: [
+        { id: 'systemSettings', label: 'System Settings', icon: 'settings.svg', type: 'panel', target: 'systemSettings' },
+        //{ id: 'portfolio', label: 'Portfolio', icon: 'portfolio', type: 'panel', target: 'portfolio' },
+        //{ id: 'ecommerce', label: 'E-commerce Platform', icon: 'ecommerce', type: 'panel', target: 'ecommerce' },
+        //{ id: 'spa', label: 'SPA: Teknolojik yemekler', icon: 'spa', type: 'panel', target: 'spa' },
       ],
     },
     {
       id: 'work',
       label: 'Projeler',
-      icon: 'folder',
+      icon: 'folder.svg',
       items: [
-        { id: 'projects', label: 'Projeler', icon: 'projects', type: 'panel', target: 'projects' },
-        { id: 'portfolio', label: 'Portfolio', icon: 'portfolio', type: 'panel', target: 'portfolio' },
-        { id: 'ecommerce', label: 'E-commerce Platform', icon: 'ecommerce', type: 'panel', target: 'ecommerce' },
-        { id: 'spa', label: 'SPA: Teknolojik yemekler', icon: 'spa', type: 'panel', target: 'spa' },
+        { id: 'projects', label: 'Projeler', icon: 'trophy.svg', type: 'panel', target: 'projects' },
+        { id: 'portfolio', label: 'Portfolio', icon: 'trophy.svg', type: 'panel', target: 'portfolio' },
+        { id: 'ecommerce', label: 'E-commerce Platform', icon: 'trophy.svg', type: 'panel', target: 'ecommerce' },
+        { id: 'spa', label: 'SPA: Teknolojik yemekler', icon: 'trophy.svg', type: 'panel', target: 'spa' },
       ],
     },
     {
       id: 'game',
       label: 'Game',
-      icon: 'folder',
+      icon: 'game.svg',
       items: [
-        { id: 'doom', label: 'Doom', icon: 'doom', type: 'game', target: 'doom' },
-      ],
-    },
-    {
-      id: 'system',
-      label: 'Ayarlar',
-      icon: 'settings',
-      items: [
-        { id: 'settings', label: 'Ayarlar', icon: 'settings', type: 'panel', target: 'settings' },
-        { id: 'contact', label: 'İletişim', icon: 'contact', type: 'panel', target: 'contact' },
-        { id: 'test', label: 'Test', icon: 'test', type: 'panel', target: 'test' },
+        { id: 'doom', label: 'Doom', icon: 'cd.svg', type: 'game', target: 'doom' },
       ],
     },
 

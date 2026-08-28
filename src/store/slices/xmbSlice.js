@@ -73,7 +73,7 @@ const xmbSlice = createSlice({
 
     // --- Panel yönetimi ---
     openPanelById(state, action) {
-      state.openPanel = action.payload; // ör. 'about', 'cv', 'projects', 'settings', 'contact'
+      state.openPanel = action.payload;
     },
     closePanel(state) {
       state.openPanel = null;

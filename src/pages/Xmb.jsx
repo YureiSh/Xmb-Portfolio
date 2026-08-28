@@ -7,14 +7,14 @@ import {
 } from '../store/slices/xmbSlice';
 import { xmbData } from '../constant';
 import { useXmbInput } from '../hooks/useXmbInput';
+import { createXmbCanvas } from '../background/xmbCanvas';
 import '../Xmb.css';
 
-// biz sadece track'i kaydırıyoruz.
-const CATEGORY_SPACING = 200; 
-const ITEM_SPACING = 64; 
+const CATEGORY_SPACING = 100;
+const ITEM_SPACING = 140;
 
 const CATEGORY_ANCHOR_X = 0;
-const ITEM_ANCHOR_Y = 0;
+const ITEM_ANCHOR_Y = 40;
 
 export function Xmb() {
   useXmbInput();
@@ -22,14 +22,16 @@ export function Xmb() {
   const activeCategoryIndex = useSelector(selectActiveCategoryIndex);
   const activeItemIndex = useSelector(selectActiveItemIndex);
 
+  const canvasRef = useRef(null);
   const categoriesTrackRef = useRef(null);
   const itemsTrackRef = useRef(null);
-
-  // Kategori değiştiğinde items listesinin İÇERİĞİ tamamen değişiyor
-  // (farklı kategorinin farklı öğeleri). Bu yüzden kategori değişimini
-  // ayrıca izleyip, items track'ini o anlık ANİMASYONSUZ doğru yere
-  // oturtuyoruz (gsap.set). Buraya set içinde bir delay konulabilir. 
   const prevCategoryIndexRef = useRef(activeCategoryIndex);
+
+  // --- WebGL dalga arkaplanı ---
+  useEffect(() => {
+    const instance = createXmbCanvas(canvasRef.current);
+    return () => instance.destroy();
+  }, []);
 
   // --- Yatay: kategori kayması ---
   useEffect(() => {
@@ -48,11 +50,9 @@ export function Xmb() {
       prevCategoryIndexRef.current !== activeCategoryIndex;
 
     if (categoryJustChanged) {
-      // Farklı kategorinin öğe listesine geçtik: kaymadan, direkt oturt.
       gsap.set(itemsTrackRef.current, { y: targetY });
       prevCategoryIndexRef.current = activeCategoryIndex;
     } else {
-      // Aynı kategori içinde yukarı/aşağı hareket: normal kaysın.
       gsap.to(itemsTrackRef.current, {
         y: targetY,
         duration: 0.3,
@@ -63,7 +63,8 @@ export function Xmb() {
 
   return (
     <div className="xmb">
-      {/* Yatay eksen: kategoriler, sabit aralıklarla absolute konumlanmış */}
+      <canvas className="canvas" ref={canvasRef} />
+
       <div className="xmb__categories-viewport">
         <div className="xmb__categories-track" ref={categoriesTrackRef}>
           {xmbData.categories.map((category, categoryIndex) => (
@@ -76,13 +77,15 @@ export function Xmb() {
               }
               style={{ left: categoryIndex * CATEGORY_SPACING }}
             >
-              {category.label}
+              <div className='flex flex-col justify-center items-center max-w-12 max-h-12'>
+                {category.icon ? <img src={`/src/assets/icons/${category.icon}`} alt={category.icon} height={48} width={48} /> : null}
+                <p className='text-[16px]'>{category.label}</p>
+              </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Dikey eksen: SADECE aktif kategorinin öğeleri */}
       <div className="xmb__items-viewport">
         <div className="xmb__items-track" ref={itemsTrackRef}>
           {xmbData.categories[activeCategoryIndex].items.map((item, itemIndex) => (
@@ -95,7 +98,10 @@ export function Xmb() {
               }
               style={{ top: itemIndex * ITEM_SPACING }}
             >
-              {item.label}
+              <div className='flex flex-row gap-4 justify-start items-center max-w-64 max-h-12'>
+                <img src={`/src/assets/icons/${item.icon}`} alt={item.icon} height={48} width={48} />
+                <p>{item.label}</p>
+              </div>
             </div>
           ))}
         </div>
