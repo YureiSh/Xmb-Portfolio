@@ -4,27 +4,19 @@ import gsap from 'gsap';
 import { selectOpenPanel, closePanel } from '../store/slices/xmbSlice';
 import { PANELS } from '../constant';
 import '../Panel.css';
+import { PANEL_COMPONENTS } from '../panels';
 
-/**
- * Panel kabuğu. İçerikleri Hafta 3 boyunca doldurulacak.
- *
- * Redux sadece "hangi panel açık" bilgisini tutar (openPanel).
- * Panelin fullscreen mi sidebar mı olduğu constant.js'teki PANELS
- * tablosundan gelir, animasyon tamamen GSAP'ın işi.
- */
 export function Panel() {
     const openPanel = useSelector(selectOpenPanel);
     const dispatch = useDispatch();
 
-    // React openPanel null olur olmaz component'i söker. Ama biz önce
-    // kapanış animasyonunu oynatmak istiyoruz — o yüzden "şu an DOM'da
-    // duran panel" ayrı bir state'te tutuluyor.
     const [mountedPanel, setMountedPanel] = useState(openPanel);
 
     const rootRef = useRef(null);
     const surfaceRef = useRef(null);
-    // Panel kapanınca odağı geri vereceğimiz element.
     const lastFocusedRef = useRef(null);
+
+    const Content = mountedPanel ? PANEL_COMPONENTS[mountedPanel] : null;
 
     useEffect(() => {
         if (openPanel) {
@@ -57,7 +49,6 @@ export function Panel() {
         return () => tween.kill();
     }, [openPanel, mountedPanel]);
 
-    // Açılış animasyonu + odak
     useEffect(() => {
         if (!mountedPanel || !openPanel) return;
         const surface = surfaceRef.current;
@@ -75,11 +66,9 @@ export function Panel() {
             { xPercent: 0, opacity: 1, scale: 1, duration: 0.3, ease: 'power2.out' }
         );
 
-        // Odağı panele taşı: ekran okuyucular ve Tab tuşu için gerekli.
         rootRef.current?.focus();
     }, [mountedPanel, openPanel]);
 
-    // Panel kapanınca odağı geri ver.
     useEffect(() => {
         if (mountedPanel) return;
         lastFocusedRef.current?.focus?.();
@@ -102,8 +91,6 @@ export function Panel() {
             aria-label={title}
             tabIndex={-1}
         >
-            {/* Fullscreen'de arkayı karartan katman. Sidebar'da yok: XMB
-          arkada görünmeye devam etmeli. */}
             {!isSidebar && (
                 <div className="panel__scrim" onClick={() => dispatch(closePanel())} />
             )}
@@ -115,15 +102,14 @@ export function Panel() {
                     </header>
                 }
 
-                <div className={isSidebar ? "panel__body flex flex-col justify-center" :"panel__body flex flex-col justify-center items-center"}>
-                    <p>Click ESC to close</p>
-                    {/* İçerikler Salı'dan itibaren buraya. */}
-                    <p>panelId: {mountedPanel}</p>
+                <div className={isSidebar ? "panel__body flex flex-col justify-center" : "panel__body flex flex-col justify-center items-center"}>
+                    {Content ? <Content /> : <p>panelId: {mountedPanel}</p>}
                 </div>
 
                 {isSidebar ? null :
                     <div className='panel__bottom flex justify-center items-center'>
                         <p className='pt-2'>ESC Close</p>
+                        
                     </div>
                 }
 

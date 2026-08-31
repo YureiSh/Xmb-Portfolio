@@ -49,6 +49,30 @@ export const xmbData = {
       ],
     },
     {
+      id: 'photo',
+      label: 'Photo',
+      icon: 'photos.svg',
+      items: [
+        { id: 'photo_playlists', label: 'Playlists', icon: 'playlist.svg', type: 'panel', target: 'photo_playlists' },
+      ],
+    },
+    {
+      id: 'music',
+      label: 'Music',
+      icon: 'musics.svg',
+      items: [
+        { id: 'music_playlists', label: 'Playlists', icon: 'playlist.svg', type: 'panel', target: 'music_playlists' },
+      ],
+    },
+    {
+      id: 'video',
+      label: 'Video',
+      icon: 'video.svg',
+      items: [
+        { id: 'video_folder', label: 'Video', icon: 'folder.svg', type: 'panel', target: 'video_folder' },
+      ],
+    },
+    {
       id: 'work',
       label: 'Projeler',
       icon: 'folder.svg',
@@ -79,13 +103,13 @@ export const xmbData = {
  * @typedef {'fullscreen' | 'sidebar'} PanelMode
  */
 export const PANELS = {
-  about:          { label: 'Hakkımda',            mode: 'fullscreen' },
-  cv:             { label: 'CV',                  mode: 'fullscreen' },
-  projects:       { label: 'Projeler',            mode: 'fullscreen' },
-  portfolio:      { label: 'Portfolio',           mode: 'fullscreen' },
-  ecommerce:      { label: 'E-commerce Platform', mode: 'fullscreen' },
-  spa:            { label: 'SPA: Teknolojik yemekler', mode: 'fullscreen' },
-  systemSettings: { label: 'System Settings',     mode: 'sidebar' },
-  themeSetting:   { label: 'Theme Settings',      mode: 'sidebar' },
-  doom:           { label: 'Doom',                mode: 'fullscreen' },
+  about: { label: 'Hakkımda', mode: 'fullscreen' },
+  cv: { label: 'CV', mode: 'fullscreen' },
+  projects: { label: 'Projeler', mode: 'fullscreen' },
+  portfolio: { label: 'Portfolio', mode: 'fullscreen' },
+  ecommerce: { label: 'E-commerce Platform', mode: 'fullscreen' },
+  spa: { label: 'SPA: Teknolojik yemekler', mode: 'fullscreen' },
+  systemSettings: { label: 'System Settings', mode: 'sidebar' },
+  themeSetting: { label: 'Theme Settings', mode: 'sidebar' },
+  doom: { label: 'Doom', mode: 'fullscreen' },
 };

@@ -67,7 +67,7 @@ export function Xmb() {
       <canvas className="canvas" ref={canvasRef} />
       <Panel />
       <div className="xmb__categories-viewport">
-        <div className="xmb__categories-track" ref={categoriesTrackRef}>
+        <div className="xmb__categories-track" ref={categoriesTrackRef}> 
           {xmbData.categories.map((category, categoryIndex) => (
             <div
               key={category.id}
@@ -79,8 +79,8 @@ export function Xmb() {
               style={{ left: categoryIndex * CATEGORY_SPACING }}
             >
               <div className='flex flex-col justify-center items-center max-w-12 max-h-12'>
-                {category.icon ? <img src={`/icons/${category.icon}`} alt={category.icon} height={48} width={48} /> : null}
-                <p className='text-[16px]'>{category.label}</p>
+                {category.icon ? <img className='max-w-12 max-h-12' src={`/icons/${category.icon}`} alt={category.icon} height={48} width={48} /> : null}
+                {categoryIndex === activeCategoryIndex ? <p className='text-[16px]' >{category.label}</p> : null}
               </div>
             </div>
           ))}
@@ -100,7 +100,7 @@ export function Xmb() {
               style={{ top: itemIndex * ITEM_SPACING }}
             >
               <div className='flex flex-row gap-4 justify-start items-center max-w-64 max-h-12'>
-                <img src={`/icons/${item.icon}`} alt={item.icon} height={48} width={48} />
+                <img className='max-w-12 max-h-12' src={`/icons/${item.icon}`} alt={item.icon} height={48} width={48} />
                 <p>{item.label}</p>
               </div>
             </div>
