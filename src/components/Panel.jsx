@@ -17,6 +17,7 @@ export function Panel() {
     const lastFocusedRef = useRef(null);
 
     const Content = mountedPanel ? PANEL_COMPONENTS[mountedPanel] : null;
+    const isProject = mountedPanel && mountedPanel.startsWith('project_');
 
     useEffect(() => {
         if (openPanel) {
@@ -25,7 +26,6 @@ export function Panel() {
             return;
         }
 
-        // Kapanış: animasyonu oynat, bitince DOM'dan söktür.
         if (!mountedPanel) return;
         const surface = surfaceRef.current;
         if (!surface) {
@@ -107,9 +107,12 @@ export function Panel() {
                 </div>
 
                 {isSidebar ? null :
-                    <div className='panel__bottom flex justify-center items-center'>
+                    <div className='panel__bottom flex justify-center items-center gap-2'>
                         <p className='pt-2'>ESC Close</p>
-                        
+                        {isProject ? <div className='flex justify-center items-center pt-2 gap-2'>
+                            <p>Q Github </p>
+                            <p>E Website </p>
+                        </div> : null}
                     </div>
                 }
 

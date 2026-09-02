@@ -12,10 +12,19 @@ import '../Xmb.css';
 import { Panel } from '../components/Panel';
 
 const CATEGORY_SPACING = 100;
-const ITEM_SPACING = 140;
 
 const CATEGORY_ANCHOR_X = 0;
 const ITEM_ANCHOR_Y = 40;
+
+const ITEM_SPACING_COMPACT = 70;   // item'ların birbirine olan normal mesafesi
+const ACTIVE_GAP_EXTRA = 70;       // aktifin hemen komşularına eklenen ekstra boşluk
+
+function getItemOffset(index, activeIndex) {
+  const base = index * ITEM_SPACING_COMPACT;
+  if (index < activeIndex) return base - ACTIVE_GAP_EXTRA;
+  if (index > activeIndex) return base + ACTIVE_GAP_EXTRA;
+  return base; // aktifin kendisi — referans nokta, extra almaz
+}
 
 export function Xmb() {
   useXmbInput();
@@ -46,7 +55,7 @@ export function Xmb() {
 
   // --- Dikey: öğe kayması ---
   useEffect(() => {
-    const targetY = ITEM_ANCHOR_Y - activeItemIndex * ITEM_SPACING;
+    const targetY = ITEM_ANCHOR_Y - getItemOffset(activeItemIndex, activeItemIndex);
     const categoryJustChanged =
       prevCategoryIndexRef.current !== activeCategoryIndex;
 
@@ -56,7 +65,7 @@ export function Xmb() {
     } else {
       gsap.to(itemsTrackRef.current, {
         y: targetY,
-        duration: 0.3,
+        duration: 0.35,
         ease: 'power2.out',
       });
     }
@@ -94,13 +103,13 @@ export function Xmb() {
               key={item.id}
               className={
                 itemIndex === activeItemIndex
-                  ? 'xmb__item xmb__item--active'
+                  ? 'xmb__item--active'
                   : 'xmb__item'
               }
-              style={{ top: itemIndex * ITEM_SPACING }}
+              style={{ top: getItemOffset(itemIndex, activeItemIndex) }}
             >
               <div className='flex flex-row gap-4 justify-start items-center max-w-64 max-h-12'>
-                <img className='max-w-12 max-h-12' src={`/icons/${item.icon}`} alt={item.icon} height={48} width={48} />
+                <img className={itemIndex === activeItemIndex ? 'scale-125 max-w-12 max-h-12' : 'max-w-12 max-h-12' } src={`/icons/${item.icon}`} alt={item.icon} height={48} width={48} />
                 <p>{item.label}</p>
               </div>
             </div>

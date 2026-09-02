@@ -60,7 +60,7 @@ function ThemeSettingPanel() {
     }, [activeIndex]);
 
     return (
-        <div className="flex flex-col gap-1 pt-36">
+        <div className="flex flex-col gap-1 overflow-y-hidden">
             {THEME_PRESETS.map((preset, i) => {
                 const isActive = i === activeIndex;
                 const isApplied = preset.id === appliedId;

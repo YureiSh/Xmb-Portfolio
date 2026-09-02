@@ -29,7 +29,7 @@ export const xmbData = {
   categories: [
     {
       id: 'profile',
-      label: 'Profil',
+      label: 'Profile',
       icon: 'user.svg',
       items: [
         { id: 'about', label: 'Hakkımda', icon: 'userPlus.svg', type: 'panel', target: 'about' },
@@ -43,9 +43,9 @@ export const xmbData = {
       items: [
         { id: 'systemSettings', label: 'System Settings', icon: 'settings.svg', type: 'panel', target: 'systemSettings' },
         { id: 'themeSetting', label: 'Theme Settings', icon: 'settings.svg', type: 'panel', target: 'themeSetting' },
-        //{ id: 'portfolio', label: 'Portfolio', icon: 'portfolio', type: 'panel', target: 'portfolio' },
+        //{ id: 'project_portfolio', label: 'Portfolio', icon: 'project_portfolio', type: 'panel', target: 'project_portfolio' },
         //{ id: 'ecommerce', label: 'E-commerce Platform', icon: 'ecommerce', type: 'panel', target: 'ecommerce' },
-        //{ id: 'spa', label: 'SPA: Teknolojik yemekler', icon: 'spa', type: 'panel', target: 'spa' },
+        //{ id: 'project_spa', label: 'SPA: Teknolojik yemekler', icon: 'project_spa', type: 'panel', target: 'project_spa' },
       ],
     },
     {
@@ -74,13 +74,13 @@ export const xmbData = {
     },
     {
       id: 'work',
-      label: 'Projeler',
+      label: 'Projects',
       icon: 'folder.svg',
       items: [
-        { id: 'projects', label: 'Projeler', icon: 'trophy.svg', type: 'panel', target: 'projects' },
-        { id: 'portfolio', label: 'Portfolio', icon: 'trophy.svg', type: 'panel', target: 'portfolio' },
-        { id: 'ecommerce', label: 'E-commerce Platform', icon: 'trophy.svg', type: 'panel', target: 'ecommerce' },
-        { id: 'spa', label: 'SPA: Teknolojik yemekler', icon: 'trophy.svg', type: 'panel', target: 'spa' },
+        { id: 'projects', label: 'Projects', icon: 'trophy.svg', type: 'panel', target: 'projects' },
+        { id: 'project_portfolio', label: 'Portfolio', icon: 'trophy.svg', type: 'panel', target: 'project_portfolio' },
+        { id: 'project_ecommerce', label: 'E-commerce Platform', icon: 'trophy.svg', type: 'panel', target: 'project_ecommerce' },
+        { id: 'project_spa', label: 'SPA: Teknolojik yemekler', icon: 'trophy.svg', type: 'panel', target: 'project_spa' },
       ],
     },
     {
@@ -105,10 +105,10 @@ export const xmbData = {
 export const PANELS = {
   about: { label: 'Hakkımda', mode: 'fullscreen' },
   cv: { label: 'CV', mode: 'fullscreen' },
-  projects: { label: 'Projeler', mode: 'fullscreen' },
-  portfolio: { label: 'Portfolio', mode: 'fullscreen' },
-  ecommerce: { label: 'E-commerce Platform', mode: 'fullscreen' },
-  spa: { label: 'SPA: Teknolojik yemekler', mode: 'fullscreen' },
+  projects: { label: 'Projects', mode: 'fullscreen' },
+  project_portfolio: { label: 'Portfolio', mode: 'fullscreen' },
+  project_ecommerce: { label: 'E-commerce Platform', mode: 'fullscreen' },
+  project_spa: { label: 'SPA: Teknolojik yemekler', mode: 'fullscreen' },
   systemSettings: { label: 'System Settings', mode: 'sidebar' },
   themeSetting: { label: 'Theme Settings', mode: 'sidebar' },
   doom: { label: 'Doom', mode: 'fullscreen' },
