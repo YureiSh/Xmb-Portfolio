@@ -10,6 +10,8 @@ import { useXmbInput } from '../hooks/useXmbInput';
 import { createXmbCanvas } from '../background/xmbCanvas';
 import '../Xmb.css';
 import { Panel } from '../components/Panel';
+import PressStartGate from '../components/PressStartGate';
+import BootSequence from '../components/BootSequence';
 
 const CATEGORY_SPACING = 100;
 
@@ -73,6 +75,9 @@ export function Xmb() {
 
   return (
     <div className="xmb">
+      
+      <PressStartGate/> {/* */}
+      <BootSequence />
       <canvas className="canvas" ref={canvasRef} />
       <Panel />
       <div className="xmb__categories-viewport">

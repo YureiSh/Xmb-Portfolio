@@ -9,6 +9,7 @@ import {
   closePanel,
 } from '../store/slices/xmbSlice';
 import { xmbData } from '../constant';
+import { playNavigate } from '../audio/sounds';
 
 const REPEAT_DELAY = 400;
 const REPEAT_RATE = 120;
@@ -87,10 +88,12 @@ export function useXmbInput() {
 
       clearKeyTimers(key);
       repeatableMap[key]();
+      //playNavigate();
 
       const delayTimeout = setTimeout(() => {
         const intervalId = setInterval(() => {
           repeatableMap[key]();
+          //playNavigate();
         }, REPEAT_RATE);
         timersRef.current[key] = { delayTimeout, intervalId };
       }, REPEAT_DELAY);

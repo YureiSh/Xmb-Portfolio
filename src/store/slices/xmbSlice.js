@@ -9,7 +9,6 @@ const getItemCount = (categoryIndex) =>
   xmbData.categories[categoryIndex]?.items.length ?? 0;
 
 const initialState = {
-  // Yatay eksen: hangi kategori aktif
   activeCategoryIndex: 0,
 
   // Dikey eksen: HER kategori için ayrı hatırlanan öğe indeksi.
@@ -20,12 +19,16 @@ const initialState = {
   // Açık panel: null = kapalı, aksi halde panel id'si (ör. 'about', 'cv')
   openPanel: null,
 
-  // Boot sekansı fazı: 'booting' | 'ready'
-  // Hafta 4'te 'press-start' | 'boot-sequence' gibi ara fazlar eklenecek.
-  bootPhase: 'ready',
+  // Boot sekansı fazı: 'press-start' | 'boot-sequence' | 'ready'
+  // 'press-start': AudioContext unlock bekleniyor, XMB henüz görünmüyor
+  // 'boot-sequence': logo + dalga girişi animasyonu oynuyor, input kilitli
+  // 'ready': XMB tam çalışır durumda
+  bootPhase: 'press-start',
 };
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+const isNavigationLocked = (state) => state.openPanel || state.bootPhase !== 'ready';
 
 const xmbSlice = createSlice({
   name: 'xmb',
@@ -33,7 +36,7 @@ const xmbSlice = createSlice({
   reducers: {
     // --- Yatay navigasyon ---
     moveCategoryLeft(state) {
-      if (state.openPanel) return;
+      if (isNavigationLocked(state)) return;
       state.activeCategoryIndex = clamp(
         state.activeCategoryIndex - 1,
         0,
@@ -41,7 +44,7 @@ const xmbSlice = createSlice({
       );
     },
     moveCategoryRight(state) {
-      if (state.openPanel) return;
+      if (isNavigationLocked(state)) return;
       state.activeCategoryIndex = clamp(
         state.activeCategoryIndex + 1,
         0,
@@ -51,7 +54,7 @@ const xmbSlice = createSlice({
 
     // --- Dikey navigasyon (aktif kategori içinde) ---
     moveItemUp(state) {
-      if (state.openPanel) return;
+      if (isNavigationLocked(state)) return;
       const idx = state.activeCategoryIndex;
       const itemCount = getItemCount(idx);
       state.itemIndexByCategory[idx] = clamp(
@@ -61,7 +64,7 @@ const xmbSlice = createSlice({
       );
     },
     moveItemDown(state) {
-      if (state.openPanel) return;
+      if (isNavigationLocked(state)) return;
       const idx = state.activeCategoryIndex;
       const itemCount = getItemCount(idx);
       state.itemIndexByCategory[idx] = clamp(
