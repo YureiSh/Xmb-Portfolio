@@ -1,4 +1,4 @@
-import { playNavigate } from "../audio/sounds";
+import { playNavigate, playSelect, playBack } from '../audio/sounds';
 
 const NAV_ACTIONS = [
     'xmb/moveCategoryLeft',
@@ -8,6 +8,16 @@ const NAV_ACTIONS = [
 ];
 
 export const audioMiddleware = (store) => (next) => (action) => {
+    if (action.type === 'xmb/openPanelById') {
+        playSelect();
+        return next(action);
+    }
+
+    if (action.type === 'xmb/closePanel') {
+        playBack();
+        return next(action);
+    }
+
     if (!NAV_ACTIONS.includes(action.type)) return next(action);
 
     const before = store.getState().xmb;
