@@ -70,7 +70,7 @@ function ThemeSettingPanel() {
                         key={preset.id}
                         ref={(el) => (itemRefs.current[i] = el)}
                         onClick={() => applyPreset(i)}
-                        className={`flex items-center justify-between px-3 py-2 rounded-md cursor-pointer text-sm ${
+                        className={`flex items-center justify-between px-3 py-2 cursor-pointer text-md ${
                             isActive
                                 ? 'opacity-100'
                                 : 'opacity-65 border border-transparent hover:bg-white/5'

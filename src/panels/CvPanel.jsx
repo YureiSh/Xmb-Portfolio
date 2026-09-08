@@ -2,12 +2,7 @@ function CvPanel() {
 
     return (
         <div className="flex flex-col gap-4 h-full">
-            <div className="flex items-center justify-between">
-                <div className="flex flex-col">
-                    <span className="text-sm font-medium">Enis Ata Erkol — CV</span>
-                    <span className="text-xs opacity-60">PDF preview</span>
-                </div>
-
+            <div className="flex items-center justify-center">
                 <a
                     href="/cv.pdf"
                     download="Enis_Ata_Erkol_CV.pdf"

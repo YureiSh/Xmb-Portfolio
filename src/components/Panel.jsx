@@ -11,13 +11,13 @@ export function Panel() {
     const dispatch = useDispatch();
 
     const [mountedPanel, setMountedPanel] = useState(openPanel);
+    const [hasGamepad, setHasGamepad] = useState(false);
 
     const rootRef = useRef(null);
     const surfaceRef = useRef(null);
     const lastFocusedRef = useRef(null);
 
     const Content = mountedPanel ? PANEL_COMPONENTS[mountedPanel] : null;
-    const isProject = mountedPanel && mountedPanel.startsWith('project_');
 
     useEffect(() => {
         if (openPanel) {
@@ -75,12 +75,32 @@ export function Panel() {
         lastFocusedRef.current = null;
     }, [mountedPanel]);
 
+    useEffect(() => {
+        function check() {
+            const pads = navigator.getGamepads?.() ?? [];
+            setHasGamepad(Array.from(pads).some(Boolean));
+        }
+
+        check();
+
+        window.addEventListener('gamepadconnected', check);
+        window.addEventListener('gamepaddisconnected', check);
+
+        return () => {
+            window.removeEventListener('gamepadconnected', check);
+            window.removeEventListener('gamepaddisconnected', check);
+        };
+    }, []);
+
     if (!mountedPanel) return null;
 
     const panel = PANELS[mountedPanel];
     const mode = panel?.mode ?? 'fullscreen';
     const isSidebar = mode === 'sidebar';
     const title = panel?.label ?? mountedPanel;
+
+    const hints = (hasGamepad ? panel?.gamepadHints : panel?.keyboardHints) ?? [];
+    const closeKey = hasGamepad ? '○' : 'ESC';
 
     return (
         <div
@@ -107,12 +127,22 @@ export function Panel() {
                 </div>
 
                 {isSidebar ? null :
-                    <div className='panel__bottom flex justify-center items-center gap-2'>
-                        <p className='pt-2'>ESC Close</p>
-                        {isProject ? <div className='flex justify-center items-center pt-2 gap-2'>
-                            <p>Q Github </p>
-                            <p>E Website </p>
-                        </div> : null}
+                    <div className='panel__bottom flex justify-center items-center gap-4'>
+                        {hints.map((hint) => (
+                            <div key={hint.key} className='flex items-center gap-1.5 pt-2'>
+                                <span className='px-1.5 py-0.5 text-xs rounded border border-white/30 opacity-80'>
+                                    {hint.key}
+                                </span>
+                                <span className='text-sm opacity-70'>{hint.action}</span>
+                            </div>
+                        ))}
+
+                        <div className='flex items-center gap-1.5 pt-2'>
+                            <span className='px-1.5 py-0.5 text-xs rounded border border-white/30 opacity-80'>
+                                {closeKey}
+                            </span>
+                            <span className='text-sm opacity-70'>Close</span>
+                        </div>
                     </div>
                 }
 

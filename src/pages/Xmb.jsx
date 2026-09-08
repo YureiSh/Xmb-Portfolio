@@ -12,6 +12,7 @@ import '../Xmb.css';
 import { Panel } from '../components/Panel';
 import PressStartGate from '../components/PressStartGate';
 import BootSequence from '../components/BootSequence';
+import { useGamepadInput } from '../hooks/useGamepadInput';
 
 const CATEGORY_SPACING = 100;
 
@@ -30,6 +31,7 @@ function getItemOffset(index, activeIndex) {
 
 export function Xmb() {
   useXmbInput();
+  useGamepadInput();
 
   const activeCategoryIndex = useSelector(selectActiveCategoryIndex);
   const activeItemIndex = useSelector(selectActiveItemIndex);

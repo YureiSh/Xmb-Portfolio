@@ -1,4 +1,4 @@
-import { getAudioContext } from './audioContext';
+import { getAudioContext, getMasterGain } from './audioContext';
 
 export function playNavigate() {
     const ctx = getAudioContext();
@@ -18,7 +18,7 @@ export function playNavigate() {
     gain.gain.exponentialRampToValueAtTime(0.25, t + 0.005);
     gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
 
-    osc.connect(gain).connect(ctx.destination);
+    osc.connect(gain).connect(getMasterGain());
     osc.start(t);
     osc.stop(t + 0.06);
 }
@@ -33,7 +33,6 @@ export function playSelect() {
     osc.type = 'sine';
     const baseFreq = 1250;
 
-    // Yukarı doğru kısa bir kayma — "onay" hissi
     osc.frequency.setValueAtTime(baseFreq - 400, t);
     osc.frequency.exponentialRampToValueAtTime(baseFreq, t + 0.04);
 
@@ -41,7 +40,7 @@ export function playSelect() {
     gain.gain.exponentialRampToValueAtTime(0.28, t + 0.008);
     gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.12);
 
-    osc.connect(gain).connect(ctx.destination);
+    osc.connect(gain).connect(getMasterGain());
     osc.start(t);
     osc.stop(t + 0.13);
 }
@@ -64,7 +63,7 @@ export function playBack() {
     gain.gain.exponentialRampToValueAtTime(0.22, t + 0.008);
     gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.11);
 
-    osc.connect(gain).connect(ctx.destination);
+    osc.connect(gain).connect(getMasterGain());
     osc.start(t);
     osc.stop(t + 0.12);
 }

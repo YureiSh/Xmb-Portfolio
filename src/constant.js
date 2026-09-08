@@ -42,7 +42,7 @@ export const xmbData = {
       icon: 'settings.svg',
       items: [
         { id: 'systemSettings', label: 'System Settings', icon: 'settings.svg', type: 'panel', target: 'systemSettings' },
-        { id: 'themeSetting', label: 'Theme Settings', icon: 'settings.svg', type: 'panel', target: 'themeSetting' },
+        { id: 'themeSettings', label: 'Theme Settings', icon: 'settings.svg', type: 'panel', target: 'themeSettings' },
         //{ id: 'project_portfolio', label: 'Portfolio', icon: 'project_portfolio', type: 'panel', target: 'project_portfolio' },
         //{ id: 'ecommerce', label: 'E-commerce Platform', icon: 'ecommerce', type: 'panel', target: 'ecommerce' },
         //{ id: 'project_spa', label: 'SPA: Teknolojik yemekler', icon: 'project_spa', type: 'panel', target: 'project_spa' },
@@ -103,13 +103,100 @@ export const xmbData = {
  * @typedef {'fullscreen' | 'sidebar'} PanelMode
  */
 export const PANELS = {
-  about: { label: 'Hakkımda', mode: 'fullscreen' },
-  cv: { label: 'CV', mode: 'fullscreen' },
-  projects: { label: 'Projects', mode: 'fullscreen' },
-  project_portfolio: { label: 'Portfolio', mode: 'fullscreen' },
-  project_ecommerce: { label: 'E-commerce Platform', mode: 'fullscreen' },
-  project_spa: { label: 'SPA: Teknolojik yemekler', mode: 'fullscreen' },
-  systemSettings: { label: 'System Settings', mode: 'sidebar' },
-  themeSetting: { label: 'Theme Settings', mode: 'sidebar' },
-  doom: { label: 'Doom', mode: 'fullscreen' },
+  about: {
+    label: 'Hakkımda',
+    mode: 'fullscreen',
+    keyboardHints: [{ key: '↑↓', action: 'Scroll' }],
+    gamepadHints: [{ key: '↑↓', action: 'Scroll' }],
+  },
+  cv: {
+    label: 'CV',
+    mode: 'fullscreen',
+    keyboardHints: [
+      { key: '↑↓', action: 'Scroll' },
+      { key: 'Enter', action: 'İndir' },
+    ],
+    gamepadHints: [
+      { key: '↑↓', action: 'Scroll' },
+      { key: '✕', action: 'İndir' },
+    ],
+  },
+  projects: {
+    label: 'Projects',
+    mode: 'fullscreen',
+    keyboardHints: [
+      { key: '↑↓', action: 'Seç' },
+      { key: 'Enter', action: 'Aç' },
+    ],
+    gamepadHints: [
+      { key: '↑↓', action: 'Seç' },
+      { key: '✕', action: 'Aç' },
+    ],
+  },
+  project_portfolio: {
+    label: 'Portfolio',
+    mode: 'fullscreen',
+    keyboardHints: [
+      { key: 'Q', action: 'Github' },
+      { key: 'E', action: 'Website' },
+    ],
+    gamepadHints: [
+      { key: '□', action: 'Github' },
+      { key: '△', action: 'Website' },
+    ],
+  },
+  project_ecommerce: {
+    label: 'E-commerce Platform',
+    mode: 'fullscreen',
+    keyboardHints: [
+      { key: 'Q', action: 'Github' },
+      { key: 'E', action: 'Website' },
+    ],
+    gamepadHints: [
+      { key: '□', action: 'Github' },
+      { key: '△', action: 'Website' },
+    ],
+  },
+  project_spa: {
+    label: 'SPA: Teknolojik yemekler',
+    mode: 'fullscreen',
+    keyboardHints: [
+      { key: 'Q', action: 'Github' },
+      { key: 'E', action: 'Website' },
+    ],
+    gamepadHints: [
+      { key: '□', action: 'Github' },
+      { key: '△', action: 'Website' },
+    ],
+  },
+  systemSettings: {
+    label: 'System Settings',
+    mode: 'sidebar',
+    keyboardHints: [
+      { key: '↑↓', action: 'Seç' },
+      { key: '←→', action: 'Değiştir' },
+    ],
+    gamepadHints: [
+      { key: '↑↓', action: 'Seç' },
+      { key: '←→', action: 'Değiştir' },
+    ],
+  },
+  themeSetting: {
+    label: 'Theme Settings',
+    mode: 'sidebar',
+    keyboardHints: [
+      { key: '↑↓', action: 'Seç' },
+      { key: 'Enter', action: 'Uygula' },
+    ],
+    gamepadHints: [
+      { key: '↑↓', action: 'Seç' },
+      { key: '✕', action: 'Uygula' },
+    ],
+  },
+  doom: {
+    label: 'Doom',
+    mode: 'fullscreen',
+    keyboardHints: [{ key: '↑↓←→', action: 'Hareket' }],
+    gamepadHints: [{ key: '↑↓←→', action: 'Hareket' }],
+  },
 };

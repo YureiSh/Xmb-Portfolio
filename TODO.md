@@ -4,6 +4,7 @@
 - In Xmb.jsx and .css, changed active item behaviours and its scales to make it similar. Now only 
 the images scale while text don't change. 
 
+- (08.09.26 16.50) minor opacity changes might be needed for System settings.
 
 2. sfx (Week 4)
 - ``if (isNavigationLocked(state)) return;`` is added, to block collision on Gsap timeline. bootPhase state from redux is now available.
