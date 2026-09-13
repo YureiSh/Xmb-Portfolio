@@ -1,11 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from './slices/authSlices';
 import xmbReducer from './slices/xmbSlice';
 import { audioMiddleware } from './audioMiddleware';
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
     xmb: xmbReducer
   },
   middleware: (getDefaultMiddleware) =>

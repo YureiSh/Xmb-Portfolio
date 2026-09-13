@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { getVolume, setVolume, isMuted, setMuted } from '../audio/audioContext';
-import { playNavigate } from '../audio/sounds';
+import { getVolume, setVolume, isMuted, setMuted } from '../../audio/audioContext';
+import { playNavigate } from '../../audio/sounds';
 
 const ROWS = ['mute', 'volume'];
 const VOLUME_STEP = 0.1;

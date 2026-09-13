@@ -7,9 +7,9 @@ import {
   moveItemDown,
   openPanelById,
   closePanel,
+  isInputCaptured,
 } from '../store/slices/xmbSlice';
 import { xmbData } from '../constant';
-import { playNavigate } from '../audio/sounds';
 
 const REPEAT_DELAY = 400;
 const REPEAT_RATE = 120;
@@ -74,6 +74,10 @@ export function useXmbInput() {
 
     const handleKeyDown = (e) => {
       const key = e.key;
+
+      // Bir panel girdiyi devraldıysa (Doom) hiçbir tuşa dokunmuyoruz —
+      // preventDefault bile etmiyoruz ki ok tuşları/Escape oyuna ulaşsın.
+      if (isInputCaptured(store.getState().xmb)) return;
 
       if (oneShotMap[key]) {
         e.preventDefault();

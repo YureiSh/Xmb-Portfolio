@@ -1,18 +1,35 @@
-import AboutPanel from "./AboutPanel";
-import CvPanel from "./CvPanel";
-import ProjectEcommercePanel from "./project panels/ProjectEcommercePanel";
-import ProjectPortfolioPanel from "./project panels/ProjectPortfolioPanel";
-import ProjectSpaPanel from "./project panels/ProjectSpaPanel";
-import SystemSettingsPanel from "./SystemSettingsPanel";
-import ThemeSettingPanel from "./ThemeSettingPanel";
+// Paneller, XMB'de bağlı oldukları kategoriye (xmbData.categories[].id) göre
+// klasörlenmiştir: profile/ settings/ photo/ music/ video/ work/ game/
+import DoomPanel from "./game/DoomPanel";
+import MusicPlaylistsPanel from "./music/MusicPlaylistsPanel";
+import PhotoPlaylistsPanel from "./photo/PhotoPlaylistsPanel";
+import AboutPanel from "./profile/AboutPanel";
+import CvPanel from "./profile/CvPanel";
+import SystemSettingsPanel from "./settings/SystemSettingsPanel";
+import ThemeSettingPanel from "./settings/ThemeSettingPanel";
+import VideoFolderPanel from "./video/VideoFolderPanel";
+import ProjectEcommercePanel from "./work/ProjectEcommercePanel";
+import ProjectPortfolioPanel from "./work/ProjectPortfolioPanel";
+import ProjectsPanel from "./work/ProjectsPanel";
+import ProjectSpaPanel from "./work/ProjectSpaPanel";
 
 export const PANEL_COMPONENTS = {
+// profile
 about: AboutPanel,
 cv: CvPanel,
-themeSettings: ThemeSettingPanel,
+// settings
 systemSettings: SystemSettingsPanel,
+themeSettings: ThemeSettingPanel,
+// photo / music / video
+photo_playlists: PhotoPlaylistsPanel,
+music_playlists: MusicPlaylistsPanel,
+video_folder: VideoFolderPanel,
+// work
+projects: ProjectsPanel,
+project_portfolio: ProjectPortfolioPanel,
 project_ecommerce: ProjectEcommercePanel,
 project_spa: ProjectSpaPanel,
-project_portfolio: ProjectPortfolioPanel,
+// game
+doom: DoomPanel,
 
 };

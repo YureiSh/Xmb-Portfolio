@@ -181,7 +181,7 @@ export const PANELS = {
       { key: '←→', action: 'Değiştir' },
     ],
   },
-  themeSetting: {
+  themeSettings: {
     label: 'Theme Settings',
     mode: 'sidebar',
     keyboardHints: [
@@ -196,7 +196,21 @@ export const PANELS = {
   doom: {
     label: 'Doom',
     mode: 'fullscreen',
-    keyboardHints: [{ key: '↑↓←→', action: 'Hareket' }],
-    gamepadHints: [{ key: '↑↓←→', action: 'Hareket' }],
+    // Panel tüm girdiyi devralır: XMB navigasyonu ve gamepad köprüsü susar,
+    // Escape dahil her tuş Doom'a gider. Kapatma bu yüzden ayrı bir tuşta.
+    capturesInput: true,
+    closeKey: { keyboard: 'F10', gamepad: 'OPTIONS' },
+    keyboardHints: [
+      { key: '↑↓←→', action: 'Hareket' },
+      { key: 'Ctrl', action: 'Ateş' },
+      { key: 'Space', action: 'Kullan' },
+      { key: 'Esc', action: 'Menü' },
+    ],
+    gamepadHints: [
+      { key: '↑↓←→', action: 'Hareket' },
+      { key: '✕', action: 'Ateş' },
+      { key: '□', action: 'Kullan' },
+      { key: '○', action: 'Menü' },
+    ],
   },
 };

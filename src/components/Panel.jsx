@@ -100,7 +100,10 @@ export function Panel() {
     const title = panel?.label ?? mountedPanel;
 
     const hints = (hasGamepad ? panel?.gamepadHints : panel?.keyboardHints) ?? [];
-    const closeKey = hasGamepad ? '○' : 'ESC';
+    // Doom gibi Escape'i kendi kullanan paneller closeKey ile bunu ezebiliyor.
+    const closeKey = hasGamepad
+        ? (panel?.closeKey?.gamepad ?? '○')
+        : (panel?.closeKey?.keyboard ?? 'ESC');
 
     return (
         <div

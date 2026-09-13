@@ -1,4 +1,6 @@
 import { useEffect, useRef } from 'react';
+import { useStore } from 'react-redux';
+import { isInputCaptured } from '../store/slices/xmbSlice';
 
 const DEADZONE = 0.5;
 
@@ -38,6 +40,7 @@ function emitKey(type, key) {
 
 export function useGamepadInput() {
     const heldRef = useRef({});
+    const store = useStore();
 
     useEffect(() => {
         let rafId = null;
@@ -52,6 +55,14 @@ export function useGamepadInput() {
         }
 
         function poll() {
+            // Doom gibi girdiyi devralan bir panel açıkken köprüyü kapatıyoruz:
+            // orada gamepad'i panelin kendisi Doom'a uygun eşlemeyle okuyor.
+            if (isInputCaptured(store.getState().xmb)) {
+                releaseAll();
+                rafId = requestAnimationFrame(poll);
+                return;
+            }
+
             const pads = navigator.getGamepads();
             let pad = null;
             for (const p of pads) {
@@ -87,5 +98,5 @@ export function useGamepadInput() {
             if (rafId !== null) cancelAnimationFrame(rafId);
             releaseAll();
         };
-    }, []);
+    }, [store]);
 }

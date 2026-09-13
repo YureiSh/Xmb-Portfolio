@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { xmbData } from '../../constant';
+import { xmbData, PANELS } from '../../constant';
 
 // Kategori sayısı ve her kategorideki öğe sayısı xmbData'dan türetiliyor.
 // Böylece sınır kontrolleri veriye göre otomatik çalışır, sabit sayı yazılmaz.
@@ -27,6 +27,11 @@ const initialState = {
 };
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+// Bir panel girdiyi tamamen devralmış mı? (ör. Doom: Escape dahil her tuş ona ait)
+// Hem reducer'lar hem de girdi hook'ları bunu kullanıyor, o yüzden dışa açık.
+export const isInputCaptured = (state) =>
+  Boolean(state.openPanel && PANELS[state.openPanel]?.capturesInput);
 
 const isNavigationLocked = (state) => state.openPanel || state.bootPhase !== 'ready';
 
@@ -120,5 +125,6 @@ export const selectActiveCategoryIndex = (state) => state.xmb.activeCategoryInde
 export const selectActiveItemIndex = (state) => state.xmb.itemIndexByCategory[state.xmb.activeCategoryIndex];
 export const selectOpenPanel = (state) => state.xmb.openPanel;
 export const selectBootPhase = (state) => state.xmb.bootPhase;
+export const selectInputCaptured = (state) => isInputCaptured(state.xmb);
 
 export default xmbSlice.reducer;
