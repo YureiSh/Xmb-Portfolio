@@ -5,11 +5,57 @@
   background: #000;
   color: #fff;
   font-family: sans-serif;
+  /* Mobilde 100vh adres çubuğunu saymaz; dvh gerçek görünür alanı verir.
+     Desteklemeyen tarayıcı ilk satırda kalır. */
+  min-height: 100dvh;
+  /* XMB bir uygulama: sayfa hiçbir eksende kaymaz. Absolute konumlu öğeler
+     normalde kaydırma alanına dahil olduğu için kısa pencerede dikey scrollbar
+     çıkıyordu. Taşan öğeler artık kırpılır — PS3'te de alttan kaybolurlar.
+     Panellerin kendi iç kaydırması (.panel__body) bundan etkilenmez. */
+  overflow: hidden;
 }
 
+/* Masaüstü (≥1024 genişlik, >900 yükseklik) ölçüleri olduğu gibi.
+   Genişlik sorguları sol/sağı, yükseklik sorguları üst/altı yönetir —
+   bağımsızlar, böylece geniş ama kısa bir pencere de doğru çalışır. */
 .xmb {
-  padding: 240px;
-  padding-left: 300px;
+  padding: 240px 240px 240px 300px;
+}
+
+@media (max-width: 1024px) {
+  .xmb {
+    padding-left: 120px;
+    padding-right: 48px;
+  }
+}
+
+@media (max-width: 640px) {
+  .xmb {
+    padding-left: 32px;
+    padding-right: 16px;
+  }
+}
+
+/* Üst boşluk + 32px kategori rayı + ~370px öğe listesi (4 öğe) sığmalı. */
+@media (max-height: 900px) {
+  .xmb {
+    padding-top: 120px;
+    padding-bottom: 120px;
+  }
+}
+
+@media (max-height: 700px) {
+  .xmb {
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+}
+
+@media (max-height: 520px) {
+  .xmb {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
 }
 
 .xmb__categories-viewport {

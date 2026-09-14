@@ -90,6 +90,43 @@
   border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
+/* 160px'lik üst/alt "letterbox" masaüstü için. Genişlik sorguları yanları,
+   yükseklik sorguları üst/altı yönetir — .xmb ile aynı mantık. */
+@media (max-width: 1024px) {
+  .panel__header,
+  .panel__bottom {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .panel__header,
+  .panel__bottom {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .panel--fullscreen .panel__surface {
+    border-radius: 0;
+  }
+}
+
+@media (max-height: 900px) {
+  .panel__header { padding-top: 80px; }
+  .panel__bottom { padding-bottom: 80px; }
+}
+
+@media (max-height: 700px) {
+  .panel__header { padding-top: 40px; }
+  .panel__bottom { padding-bottom: 40px; }
+}
+
+@media (max-height: 520px) {
+  .panel__header { padding-top: 16px; }
+  .panel__bottom { padding-bottom: 16px; }
+}
+
 
 /*Şimdilik kalsın bu scroll mantığı*/
 
@@ -156,6 +193,15 @@
   max-width: 100%;
   width: auto;
   border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Dikey ekranda yükseklik değil genişlik sınırlayıcı; aksi halde
+   max-width kırpması en-boy oranını bozup görüntüyü basıklaştırıyordu. */
+@media (max-aspect-ratio: 4 / 3) {
+  .doom__screen {
+    width: 100%;
+    height: auto;
+  }
 }
 
 .doom__overlay {

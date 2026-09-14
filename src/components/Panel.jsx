@@ -130,7 +130,7 @@ export function Panel() {
                 </div>
 
                 {isSidebar ? null :
-                    <div className='panel__bottom flex justify-center items-center gap-4'>
+                    <div className='panel__bottom flex flex-wrap justify-center items-center gap-x-4 gap-y-1'>
                         {hints.map((hint) => (
                             <div key={hint.key} className='flex items-center gap-1.5 pt-2'>
                                 <span className='px-1.5 py-0.5 text-xs rounded border border-white/30 opacity-80'>

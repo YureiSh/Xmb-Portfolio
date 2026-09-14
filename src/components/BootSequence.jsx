@@ -122,13 +122,14 @@ function BootSequence() {
 
             <div
                 ref={textRef}
-                className="fixed inset-0 z-40 flex items-center justify-end pointer-events-none"
+                className="fixed inset-0 z-40 flex items-center justify-end px-6 pointer-events-none"
             >
+                {/* 30px x 14 harf + 0.35em tracking ≈ 570px — 400px'lik ekrana sığmıyordu */}
                 <div ref={textInnerRef} className="flex flex-col items-center gap-3">
-                    <h1 className="text-white text-3xl font-light tracking-[0.35em]">
+                    <h1 className="text-white text-xl sm:text-3xl font-light tracking-[0.25em] sm:tracking-[0.35em] whitespace-nowrap">
                         ENIS ATA ERKOL
                     </h1>
-                    <p className="text-white/50 text-xs font-light tracking-[0.5em]">
+                    <p className="text-white/50 text-xs font-light tracking-[0.35em] sm:tracking-[0.5em]">
                         PORTFOLIO
                     </p>
                 </div>
