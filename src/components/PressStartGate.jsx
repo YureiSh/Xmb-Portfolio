@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectBootPhase, setBootPhase } from '../store/slices/xmbSlice';
 import { unlockAudioContext } from '../audio/audioContext';
 import { useIsDesktop } from '../hooks/useIsDesktop';
+import { useIsCompact } from '../hooks/useIsCompact';
 
 function PressStartGate() {
     const dispatch = useDispatch();
     const bootPhase = useSelector(selectBootPhase);
     const isDesktop = useIsDesktop();
+    const isCompact = useIsCompact();
     const startedRef = useRef(false);
 
     useEffect(() => {
@@ -47,7 +49,9 @@ function PressStartGate() {
                 PRESS START
             </p>
             <p className="text-white text-xs sm:text-lg tracking-[0.15em] sm:tracking-[0.3em] animate-pulse">
-                Navigation: ↑↓←→ | Selection: Enter | Return: Escape
+                {isCompact
+                    ? 'Navigation: Swipe | Selection: Tap | Return: ✕'
+                    : 'Navigation: ↑↓←→ | Selection: Enter | Return: Escape'}
             </p>
 
             {!isDesktop && (

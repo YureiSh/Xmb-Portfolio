@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
+import { usePanelScroll } from '../../hooks/usePanelScroll';
 
 function ProjectPortfolioPanel() {
+  const scrollRef = usePanelScroll();
   const githubLinkRef = useRef(null);
   const websiteLinkRef = useRef(null);
 
@@ -20,7 +22,7 @@ function ProjectPortfolioPanel() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-8 max-w-2xl pt-12 overflow-y-auto">
+    <div ref={scrollRef} className="flex flex-col gap-8 max-w-2xl pt-12 overflow-y-auto">
       <div className="flex flex-col gap-2">
         <h3 className="text-xl font-bold">Portfolio</h3>
         <p className="text-sm opacity-70">Frontend — React | Tailwind | GSAP</p>

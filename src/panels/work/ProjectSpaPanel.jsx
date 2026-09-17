@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
+import { usePanelScroll } from '../../hooks/usePanelScroll';
 
 function ProjectSpaPanel() {
+  const scrollRef = usePanelScroll();
   const githubLinkRef = useRef(null);
   const websiteLinkRef = useRef(null);
 
@@ -20,7 +22,7 @@ function ProjectSpaPanel() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-8 max-w-2xl pt-12">
+    <div ref={scrollRef} className="flex flex-col gap-8 max-w-2xl pt-12">
       <div className="flex flex-col gap-2">
         <h3 className="text-xl font-bold">SPA — Teknolojik Yemekler</h3>
         <p className="text-sm opacity-70">Full Stack Developer — React | Node</p>

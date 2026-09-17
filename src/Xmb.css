@@ -20,6 +20,37 @@
    bağımsızlar, böylece geniş ama kısa bir pencere de doğru çalışır. */
 .xmb {
   padding: 240px 240px 240px 300px;
+  /* Kategori rayı sağa, öğe listesi aşağı taşar. :root'taki overflow: hidden
+     viewport'a devredildiği için belgenin kaydırılabilir alanı yine büyüyor
+     ve mobil Chrome sayfayı o alana sığdırmak için küçültüyordu — kategori
+     değiştikçe zoom da değişiyordu. Taşmayı burada, viewport boyutundaki
+     kendi kutumuzda kırpıyoruz. clip (hidden'dan farklı olarak) kaydırma
+     kapsayıcısı oluşturmaz; fixed olan canvas ve panel etkilenmez. */
+  box-sizing: border-box;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  overflow: clip;
+}
+
+/* Kompakt mod (useIsCompact): kaydırma jestleri useSwipeInput'a gider.
+   touch-action: none → tarayıcı dokunuşu devralıp pointercancel üretmez.
+   Fare sürüklemesi de jest sayıldığı için metin seçimi burada kapalı;
+   paneller (.panel__body) bunu miras almaz, oradaki metin hâlâ seçilebilir. */
+.xmb--compact {
+  touch-action: none;
+}
+
+.xmb--compact .xmb__categories-viewport,
+.xmb--compact .xmb__items-viewport {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.xmb__category,
+.xmb__item,
+.xmb__item--active {
+  cursor: pointer;
 }
 
 @media (max-width: 1024px) {

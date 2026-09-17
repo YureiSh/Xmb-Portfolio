@@ -114,18 +114,28 @@ export function Panel() {
             aria-label={title}
             tabIndex={-1}
         >
-            {!isSidebar && (
-                <div className="panel__scrim" onClick={() => dispatch(closePanel())} />
-            )}
+            {/* Sidebar'da scrim şeffaf: arkadaki XMB görünür kalır ama dışarı
+                dokunmak paneli kapatır — dokunmatikte Escape'in karşılığı. */}
+            <div className="panel__scrim" onClick={() => dispatch(closePanel())} />
 
             <div ref={surfaceRef} className="panel__surface">
+                {/* Sadece kompakt modda görünür (CSS); klavyede ESC zaten var. */}
+                <button
+                    type="button"
+                    className="panel__close"
+                    aria-label="Close"
+                    onClick={() => dispatch(closePanel())}
+                >
+                    ✕
+                </button>
+
                 {isSidebar ? null :
                     <header className="panel__header">
                         <h2 className="panel__title">{title}</h2>
                     </header>
                 }
 
-                <div className={isSidebar ? "panel__body flex flex-col justify-center" : "panel__body flex flex-col justify-center items-center"}>
+                <div className={isSidebar ? "panel__body flex flex-col justify-center-safe" : "panel__body flex flex-col justify-center-safe items-center"}>
                     {Content ? <Content /> : <p>panelId: {mountedPanel}</p>}
                 </div>
 
@@ -153,13 +163,3 @@ export function Panel() {
         </div>
     );
 }
-
-/*
-    <button
-        type="button"
-        className="panel__close"
-        onClick={() => dispatch(closePanel())}
-    >
-        Kapat (ESC)
-    </button>
-*/

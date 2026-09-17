@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useStore } from 'react-redux';
 import { isInputCaptured } from '../store/slices/xmbSlice';
+import { emitKey } from './emitKey';
 
 const DEADZONE = 0.5;
 
@@ -30,12 +31,6 @@ function readPad(pad) {
         Enter: pressed(BTN_CROSS),
         Escape: pressed(BTN_CIRCLE),
     };
-}
-
-function emitKey(type, key) {
-    window.dispatchEvent(
-        new KeyboardEvent(type, { key, code: key, bubbles: true })
-    );
 }
 
 export function useGamepadInput() {

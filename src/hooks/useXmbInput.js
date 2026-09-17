@@ -14,6 +14,19 @@ import { xmbData } from '../constant';
 const REPEAT_DELAY = 400;
 const REPEAT_RATE = 120;
 
+// Bir öğeyi "seçer". Klavyedeki Enter da, dokunmatikteki tıklama da (Xmb.jsx)
+// buradan geçer; öğe türüne göre ne olacağı tek yerde.
+export function activateItem(item, dispatch) {
+  if (!item) return;
+
+  if (item.type === 'panel' || item.type === 'game') {
+    dispatch(openPanelById(item.target ?? item.id));
+  } else if (item.type === 'external' && item.target) {
+    // Redux'a hiç girmiyor: sayfadan çıkmak state değişikliği değil.
+    window.open(item.target, '_blank', 'noopener,noreferrer');
+  }
+}
+
 export function useXmbInput() {
   const dispatch = useDispatch();
   // useStore: state'i olay ANINDA okumak için. useSelector kullansaydık
@@ -33,22 +46,15 @@ export function useXmbInput() {
     };
 
     // Aktif item'ı seçer. Panel açıksa hiçbir şey yapmaz — panelin
-    // kendi içindeki navigasyon panelin sorumluluğunda.
+    // kendi içindeki navigasyon panelin sorumluluğunda. Boot bitmeden de
+    // yapmaz: PRESS START'ta Enter'a basmak boot'un altında panel açıyordu.
     function activateCurrentItem() {
       const state = store.getState().xmb;
-      if (state.openPanel) return;
+      if (state.openPanel || state.bootPhase !== 'ready') return;
 
       const categoryIndex = state.activeCategoryIndex;
       const itemIndex = state.itemIndexByCategory[categoryIndex];
-      const item = xmbData.categories[categoryIndex]?.items[itemIndex];
-      if (!item) return;
-
-      if (item.type === 'panel' || item.type === 'game') {
-        dispatch(openPanelById(item.target ?? item.id));
-      } else if (item.type === 'external' && item.target) {
-        // Redux'a hiç girmiyor: sayfadan çıkmak state değişikliği değil.
-        window.open(item.target, '_blank', 'noopener,noreferrer');
-      }
+      activateItem(xmbData.categories[categoryIndex]?.items[itemIndex], dispatch);
     }
 
     function goBack() {

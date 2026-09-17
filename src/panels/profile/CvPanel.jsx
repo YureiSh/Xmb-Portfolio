@@ -1,7 +1,10 @@
+import { usePanelScroll } from '../../hooks/usePanelScroll';
+
 function CvPanel() {
+    const scrollRef = usePanelScroll();
 
     return (
-        <div className="flex flex-col gap-4 h-full">
+        <div ref={scrollRef} className="flex flex-col gap-4 w-full max-w-3xl h-full min-h-0">
             <div className="flex items-center justify-center">
                 <a
                     href="/cv.pdf"

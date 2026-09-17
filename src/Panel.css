@@ -3,6 +3,10 @@
   inset: 0;
   z-index: 5; 
   outline: none;
+  /* Sidebar yüzeyi ekranın sağından kayarak gelir (xPercent: 100); o sırada
+     viewport dışına taşmasın. */
+  overflow: hidden;
+  overflow: clip;
 }
 
 /* Sidebar modunda kapsayıcı tıklamaları geçirmeli ki arkadaki XMB
@@ -11,7 +15,8 @@
   pointer-events: none;
 }
 
-.panel--sidebar .panel__surface {
+.panel--sidebar .panel__surface,
+.panel--sidebar .panel__scrim {
   pointer-events: auto;
 }
 
@@ -19,6 +24,10 @@
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
+}
+
+.panel--sidebar .panel__scrim {
+  background: transparent;
 }
 
 .panel__surface {
@@ -71,18 +80,56 @@
   
 }
 
+/* Dokunmatik/dar ekran için kapat butonu. Masaüstünde gizli: orada ESC var
+   ve alt çubuk zaten onu yazıyor. Sol üstte, çünkü sidebar yüzeyinin sağ
+   yarısı mask ile şeffaflaşıyor. */
 .panel__close {
-  background: none;
+  display: none;
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.3);
   color: #fff;
-  padding: 6px 12px;
-  border-radius: 4px;
+  border-radius: 999px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 1;
 }
 
 .panel__close:hover {
   background: rgba(255, 255, 255, 0.1);
+}
+
+.xmb--compact .panel__close {
+  display: inline-flex;
+}
+
+/* Kompakt modda kaydırma jestlerini useSwipeInput okuyor; tarayıcının
+   pan/zoom'u devralmaması için kök touch-action: none. İstisna tam ekran
+   panel gövdesi: dikey kaydırmayı tarayıcıya bırakıyoruz (doğal scroll),
+   yatay hâlâ jest olarak gelir. Sidebar (ayarlar) ↑↓'yi kendi kullanıyor;
+   orada dikey de jest olarak kalmalı. */
+.xmb--compact .panel--fullscreen .panel__body {
+  touch-action: pan-y;
+}
+
+.xmb--compact .panel--sidebar .panel__body {
+  touch-action: none;
+  /* Sidebar'ın başlığı yok; liste kapat butonunun altına girmesin. */
+  padding-top: 64px;
+}
+
+/* Dar ekranda sidebar ekranın %90'ı; sağ yarıyı şeffaflaştıran mask
+   ayar değerlerini ("Açık", "%70") okunmaz hale getiriyordu. */
+.xmb--compact .panel--sidebar .panel__surface {
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 
 .panel__bottom {

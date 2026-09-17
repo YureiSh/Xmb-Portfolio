@@ -1,18 +1,24 @@
 import { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import gsap from 'gsap';
 import {
   selectActiveCategoryIndex,
   selectActiveItemIndex,
+  selectOpenPanel,
+  selectBootPhase,
+  setActiveCategoryIndex,
+  setItemIndex,
 } from '../store/slices/xmbSlice';
 import { xmbData } from '../constant';
-import { useXmbInput } from '../hooks/useXmbInput';
+import { useXmbInput, activateItem } from '../hooks/useXmbInput';
 import { createXmbCanvas } from '../background/xmbCanvas';
 import '../Xmb.css';
 import { Panel } from '../components/Panel';
 import PressStartGate from '../components/PressStartGate';
 import BootSequence from '../components/BootSequence';
 import { useGamepadInput } from '../hooks/useGamepadInput';
+import { useSwipeInput } from '../hooks/useSwipeInput';
+import { useIsCompact } from '../hooks/useIsCompact';
 
 const CATEGORY_SPACING = 100;
 
@@ -32,9 +38,34 @@ function getItemOffset(index, activeIndex) {
 export function Xmb() {
   useXmbInput();
   useGamepadInput();
+  useSwipeInput();
 
+  const dispatch = useDispatch();
+  const isCompact = useIsCompact();
   const activeCategoryIndex = useSelector(selectActiveCategoryIndex);
   const activeItemIndex = useSelector(selectActiveItemIndex);
+  const openPanel = useSelector(selectOpenPanel);
+  const bootPhase = useSelector(selectBootPhase);
+
+  // Tıklama/dokunma ile seçim. Reducer'lardaki kilit (panel açık / boot)
+  // moveX aksiyonlarında var ama doğrudan konumlayanlarda yok; burada bakıyoruz.
+  const canNavigate = !openPanel && bootPhase === 'ready';
+
+  function handleCategoryClick(categoryIndex) {
+    if (!canNavigate) return;
+    dispatch(setActiveCategoryIndex(categoryIndex));
+  }
+
+  // Aktif olmayan öğeye dokunmak onu seçer, aktif olana dokunmak açar —
+  // klavyedeki "↓ sonra Enter" akışının iki dokunuşluk karşılığı.
+  function handleItemClick(item, itemIndex) {
+    if (!canNavigate) return;
+    if (itemIndex !== activeItemIndex) {
+      dispatch(setItemIndex({ categoryIndex: activeCategoryIndex, itemIndex }));
+      return;
+    }
+    activateItem(item, dispatch);
+  }
 
   const canvasRef = useRef(null);
   const categoriesTrackRef = useRef(null);
@@ -76,7 +107,7 @@ export function Xmb() {
   }, [activeItemIndex, activeCategoryIndex]);
 
   return (
-    <div className="xmb">
+    <div className={isCompact ? 'xmb xmb--compact' : 'xmb'}>
       
       <PressStartGate/> {/* */}
       <BootSequence />
@@ -93,6 +124,7 @@ export function Xmb() {
                   : 'xmb__category'
               }
               style={{ left: categoryIndex * CATEGORY_SPACING }}
+              onClick={() => handleCategoryClick(categoryIndex)}
             >
               <div className='flex flex-col justify-center items-center max-w-12 max-h-12'>
                 {category.icon ? <img className='max-w-12 max-h-12' src={`/icons/${category.icon}`} alt={category.icon} height={48} width={48} /> : null}
@@ -114,6 +146,7 @@ export function Xmb() {
                   : 'xmb__item'
               }
               style={{ top: getItemOffset(itemIndex, activeItemIndex) }}
+              onClick={() => handleItemClick(item, itemIndex)}
             >
               <div className='flex flex-row gap-4 justify-start items-center max-w-64 max-h-12'>
                 <img className={itemIndex === activeItemIndex ? 'scale-125 max-w-12 max-h-12' : 'max-w-12 max-h-12' } src={`/icons/${item.icon}`} alt={item.icon} height={48} width={48} />
