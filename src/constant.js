@@ -4,10 +4,12 @@
  * Her kategori yatay eksende bir ikon. Her kategorinin `items` dizisi
  * o kategori seçiliyken dikeyde gezinilen öğeler.
  *
- * @typedef {'panel' | 'game' | 'external'} XmbItemType
+ * @typedef {'panel' | 'game' | 'external' | 'sublist' | 'disabled'} XmbItemType
  * - 'panel'    → openPanelById(panelId) tetiklenir, panel component'i açılır
  * - 'game'     → WASM oyunu panel içine gömülü açılır (Hafta 5)
  * - 'external' → yeni sekmede bir linke gider (ör. GitHub, LinkedIn)
+ * - 'sublist'  → XMB sola kayar, öğenin `children` dizisi ikinci sütun olarak açılır
+ * - 'disabled' → görünür ama seçilemez; PS3'te de kullanılamayan öğeler soluk dururdu
  *
  * @typedef {Object} XmbItem
  * @property {string} id
@@ -53,7 +55,16 @@ export const xmbData = {
       label: 'Photo',
       icon: 'photos.svg',
       items: [
-        { id: 'photo_playlists', label: 'Playlists', icon: 'playlist.svg', type: 'panel', target: 'photo_playlists' },
+        {
+          id: 'photo_playlists',
+          label: 'Playlists',
+          icon: 'playlist.svg',
+          type: 'sublist',
+          emptyMessage: 'There are no photos.',
+          children: [
+            { id: 'photo_new_playlist', label: 'Create New Playlist', icon: 'playlist.svg', type: 'disabled' },
+          ],
+        },
       ],
     },
     {
@@ -61,7 +72,16 @@ export const xmbData = {
       label: 'Music',
       icon: 'musics.svg',
       items: [
-        { id: 'music_playlists', label: 'Playlists', icon: 'playlist.svg', type: 'panel', target: 'music_playlists' },
+        {
+          id: 'music_playlists',
+          label: 'Playlists',
+          icon: 'playlist.svg',
+          type: 'sublist',
+          emptyMessage: 'There are no tracks.',
+          children: [
+            { id: 'music_new_playlist', label: 'Create New Playlist', icon: 'playlist.svg', type: 'disabled' },
+          ],
+        },
       ],
     },
     {
@@ -69,7 +89,16 @@ export const xmbData = {
       label: 'Video',
       icon: 'video.svg',
       items: [
-        { id: 'video_folder', label: 'Video', icon: 'folder.svg', type: 'panel', target: 'video_folder' },
+        {
+          id: 'video_folder',
+          label: 'Video',
+          icon: 'folder.svg',
+          type: 'sublist',
+          emptyMessage: 'There are no videos.',
+          children: [
+            { id: 'video_new_folder', label: 'Create New Folder', icon: 'folder.svg', type: 'disabled' },
+          ],
+        },
       ],
     },
     {
@@ -214,3 +243,14 @@ export const PANELS = {
     ],
   },
 };
+/**
+ * Sublist öğelerine id ile doğrudan erişim. Reducer'lar ve girdi hook'ları
+ * kategorileri gezmek zorunda kalmasın diye modül seviyesinde bir kez kuruluyor.
+ * PANELS[id] ile aynı mantık: arama değil, doğrudan lookup.
+ */
+export const SUBLIST_ITEMS = Object.fromEntries(
+  xmbData.categories
+    .flatMap((category) => category.items)
+    .filter((item) => item.type === 'sublist')
+    .map((item) => [item.id, item])
+);

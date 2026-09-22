@@ -146,3 +146,45 @@
   z-index: 0;
   display: block;
 }
+/* --- Sublist ---------------------------------------------------------
+   PS3'te bir öğeye girince XMB sola kayar ve sağda ikinci bir sütun açılır.
+   Kayma GSAP'ta (Xmb.jsx); burada sadece sütunun kendi düzeni var.
+   Öğe rayının kardeşi, içinde değil — ray sola kayarken bu yerinde kalır. */
+.xmb__sublist {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+}
+
+.xmb__subitem {
+  position: absolute;
+  left: 0;
+  white-space: nowrap;
+  font-size: 16px;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.xmb__subitem--active {
+  opacity: 1;
+  font-weight: bold;
+}
+
+/* Bilinçli olarak işlevsiz öğe. Soluk ve imleçsiz durması "bozuk" değil
+   "kullanılamıyor" okunmasını sağlıyor — tıklayıp hiçbir şey olmamasından iyi. */
+.xmb__subitem--disabled {
+  cursor: default;
+}
+
+.xmb__subitem--disabled.xmb__subitem--active {
+  opacity: 0.6;
+  font-weight: normal;
+}
+
+.xmb__sublist-empty {
+  position: absolute;
+  left: 0;
+  white-space: nowrap;
+  font-size: 14px;
+  opacity: 0.35;
+}

@@ -5,15 +5,17 @@ const NAV_ACTIONS = [
     'xmb/moveCategoryRight',
     'xmb/moveItemUp',
     'xmb/moveItemDown',
+    'xmb/moveSubListUp',
+    'xmb/moveSubListDown',
 ];
 
 export const audioMiddleware = (store) => (next) => (action) => {
-    if (action.type === 'xmb/openPanelById') {
+    if (action.type === 'xmb/openPanelById' || action.type === 'xmb/openSubList') {
         playSelect();
         return next(action);
     }
 
-    if (action.type === 'xmb/closePanel') {
+    if (action.type === 'xmb/closePanel' || action.type === 'xmb/closeSubList') {
         playBack();
         return next(action);
     }
@@ -24,9 +26,11 @@ export const audioMiddleware = (store) => (next) => (action) => {
     const result = next(action);
     const after = store.getState().xmb;
 
+    // Immer referans eşitliği: clamp sınırında state değişmez, ses de çalmaz.
     const moved =
         before.activeCategoryIndex !== after.activeCategoryIndex ||
-        before.itemIndexByCategory !== after.itemIndexByCategory;
+        before.itemIndexByCategory !== after.itemIndexByCategory ||
+        before.subList !== after.subList;
 
     if (moved) playNavigate();
 

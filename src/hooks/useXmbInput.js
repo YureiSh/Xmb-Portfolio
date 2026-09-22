@@ -7,9 +7,13 @@ import {
   moveItemDown,
   openPanelById,
   closePanel,
+  openSubList,
+  closeSubList,
+  moveSubListUp,
+  moveSubListDown,
   isInputCaptured,
 } from '../store/slices/xmbSlice';
-import { xmbData } from '../constant';
+import { xmbData, SUBLIST_ITEMS } from '../constant';
 
 const REPEAT_DELAY = 400;
 const REPEAT_RATE = 120;
@@ -19,7 +23,13 @@ const REPEAT_RATE = 120;
 export function activateItem(item, dispatch) {
   if (!item) return;
 
-  if (item.type === 'panel' || item.type === 'game') {
+  // Bilinçli olarak işlevsiz öğe: tıklanır ama hiçbir şey olmaz.
+  // CSS'te soluk duruyor, yani bozuk değil — kullanılamıyor.
+  if (item.type === 'disabled') return;
+
+  if (item.type === 'sublist') {
+    dispatch(openSubList(item.id));
+  } else if (item.type === 'panel' || item.type === 'game') {
     dispatch(openPanelById(item.target ?? item.id));
   } else if (item.type === 'external' && item.target) {
     // Redux'a hiç girmiyor: sayfadan çıkmak state değişikliği değil.
@@ -29,37 +39,48 @@ export function activateItem(item, dispatch) {
 
 export function useXmbInput() {
   const dispatch = useDispatch();
-  // useStore: state'i olay ANINDA okumak için. useSelector kullansaydık
-  // her navigasyonda dependency değişir, listener'lar sürekli sökülüp
-  // yeniden takılırdı.
   const store = useStore();
 
   const timersRef = useRef({});
 
   useEffect(() => {
-    // Tekrarlanabilir tuşlar (basılı tutunca DAS/ARR ile tekrarlar)
+
+    const inSubList = () => Boolean(store.getState().xmb.subList);
     const repeatableMap = {
-      ArrowLeft: () => dispatch(moveCategoryLeft()),
-      ArrowRight: () => dispatch(moveCategoryRight()),
-      ArrowUp: () => dispatch(moveItemUp()),
-      ArrowDown: () => dispatch(moveItemDown()),
+      ArrowLeft: () =>
+        inSubList() ? dispatch(closeSubList()) : dispatch(moveCategoryLeft()),
+      ArrowRight: () =>
+        inSubList() ? dispatch(closeSubList()) : dispatch(moveCategoryRight()),
+      ArrowUp: () =>
+        inSubList() ? dispatch(moveSubListUp()) : dispatch(moveItemUp()),
+      ArrowDown: () =>
+        inSubList() ? dispatch(moveSubListDown()) : dispatch(moveItemDown()),
     };
 
-    // Aktif item'ı seçer. Panel açıksa hiçbir şey yapmaz — panelin
-    // kendi içindeki navigasyon panelin sorumluluğunda. Boot bitmeden de
-    // yapmaz: PRESS START'ta Enter'a basmak boot'un altında panel açıyordu.
     function activateCurrentItem() {
       const state = store.getState().xmb;
       if (state.openPanel || state.bootPhase !== 'ready') return;
+
+      // Sublist açıksa Enter oradaki satıra ait.
+      if (state.subList) {
+        const parent = SUBLIST_ITEMS[state.subList.itemId];
+        activateItem(parent?.children?.[state.subList.index], dispatch);
+        return;
+      }
 
       const categoryIndex = state.activeCategoryIndex;
       const itemIndex = state.itemIndexByCategory[categoryIndex];
       activateItem(xmbData.categories[categoryIndex]?.items[itemIndex], dispatch);
     }
 
+    // Panel sublist'in içinden de açılabilir, o yüzden önce panel kapanır.
     function goBack() {
       const state = store.getState().xmb;
-      if (state.openPanel) dispatch(closePanel());
+      if (state.openPanel) {
+        dispatch(closePanel());
+        return;
+      }
+      if (state.subList) dispatch(closeSubList());
     }
 
     // Tek atışlık tuşlar (basılı tutmak tekrar etmemeli)
